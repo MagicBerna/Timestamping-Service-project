@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 886" width="660" height="886">
+<defs>
+<style>
+text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+.lifeline { stroke: #cbd5e1; stroke-width: 2; }
+.arrow-line { stroke: #1e293b; stroke-width: 1.5; }
+.arrow-text { font-size: 12px; font-weight: 500; fill: #0f172a; text-anchor: middle; }
+.circle-bg { fill: #1e293b; }
+.circle-text { font-size: 10.5px; font-weight: bold; fill: #ffffff; text-anchor: middle; dominant-baseline: central; }
+.payload-box { fill: #1e293b; stroke: #0f172a; stroke-width: 1; rx: 4; }
+.payload-text { font-size: 11px; fill: #f8fafc; text-anchor: middle; dominant-baseline: central; }
+</style>
+</defs>
+<rect width="660" height="886" fill="#ffffff"/>
+<line class="lifeline" x1="155" y1="46" x2="155" y2="840"/>
+<line class="lifeline" x1="505" y1="46" x2="505" y2="840"/>
+<rect x="18" y="85" width="624" height="32" rx="4" fill="#1e293b"/>
+<text x="330" y="101" font-size="11px" font-weight="bold" fill="#ffffff" text-anchor="middle" dominant-baseline="central">Verifica 100% Offline (Nessuna connessione di rete, nessuna credenziale)</text>
+<rect x="50" y="133" width="210" height="64" rx="4" fill="#059669" stroke="#047857" stroke-width="1.5"/>
+<text x="155" y="149" font-size="11px" fill="#ffffff" text-anchor="middle" dominant-baseline="central">Possiede token.json,</text>
+<text x="155" y="165" font-size="11px" fill="#ffffff" text-anchor="middle" dominant-baseline="central">chiave pubblica server_ts.pub</text>
+<text x="155" y="181" font-size="11px" fill="#ffffff" text-anchor="middle" dominant-baseline="central">e file originale (opzionale)</text>
+<line class="arrow-line" x1="155" y1="229" x2="505" y2="229"/>
+<polygon points="505,229 497,225 497,233" fill="#1e293b"/>
+<circle class="circle-bg" cx="177" cy="229" r="9"/>
+<text class="circle-text" x="177" y="229">1</text>
+<text class="arrow-text" x="330" y="224">Esegue comando di verifica locale</text>
+<rect class="payload-box" x="220" y="237" width="220" height="44"/>
+<text class="payload-text" x="330" y="251">tss_verify server_ts.pub</text>
+<text class="payload-text" x="330" y="266">token_<h>.json [documento.pdf]</text>
+<rect x="403" y="297" width="205" height="48" rx="4" fill="#334155" stroke="#1e293b" stroke-width="1.5"/>
+<text x="505" y="313" font-size="11px" fill="#ffffff" text-anchor="middle" dominant-baseline="central">Carica la chiave pubblica</text>
+<text x="505" y="329" font-size="11px" fill="#ffffff" text-anchor="middle" dominant-baseline="central">della TSA server_ts.pub (P-384)</text>
+<rect x="398" y="359" width="215" height="48" rx="4" fill="#334155" stroke="#1e293b" stroke-width="1.5"/>
+<text x="505" y="375" font-size="11px" fill="#ffffff" text-anchor="middle" dominant-baseline="central">Parsing token.json ed estrazione</text>
+<text x="505" y="391" font-size="11px" fill="#ffffff" text-anchor="middle" dominant-baseline="central">dei campi <hash, time, signature></text>
+<rect x="383" y="421" width="245" height="48" rx="4" fill="#334155" stroke="#1e293b" stroke-width="1.5"/>
+<text x="505" y="437" font-size="11px" fill="#ffffff" text-anchor="middle" dominant-baseline="central">(Se fornito file) Calcola SHA-256 locale</text>
+<text x="505" y="453" font-size="11px" fill="#ffffff" text-anchor="middle" dominant-baseline="central">e verifica che coincida con hash del token</text>
+<rect x="390" y="483" width="230" height="48" rx="4" fill="#334155" stroke="#1e293b" stroke-width="1.5"/>
+<text x="505" y="499" font-size="11px" fill="#ffffff" text-anchor="middle" dominant-baseline="central">Ricostruisce payload canonico (40B):</text>
+<text x="505" y="515" font-size="11px" fill="#ffffff" text-anchor="middle" dominant-baseline="central">hash (32B) || time_be64 (8B)</text>
+<rect x="390" y="545" width="230" height="48" rx="4" fill="#334155" stroke="#1e293b" stroke-width="1.5"/>
+<text x="505" y="561" font-size="11px" fill="#ffffff" text-anchor="middle" dominant-baseline="central">Verifica firma crittografica ECDSA</text>
+<text x="505" y="577" font-size="11px" fill="#ffffff" text-anchor="middle" dominant-baseline="central">tramite EVP_DigestVerify con pubKts</text>
+<line class="arrow-line" x1="505" y1="625" x2="155" y2="625"/>
+<polygon points="155,625 163,621 163,629" fill="#1e293b"/>
+<circle class="circle-bg" cx="483" cy="625" r="9"/>
+<text class="circle-text" x="483" y="625">2</text>
+<text class="arrow-text" x="330" y="620">Esito verifica su stdout</text>
+<rect class="payload-box" x="205" y="633" width="250" height="44"/>
+<text class="payload-text" x="330" y="647">[OK] Token is CRYPTOGRAPHICALLY VALID</text>
+<text class="payload-text" x="330" y="662">UTC Time: 2026-09-01 14:30:00</text>
+<rect x="45" y="693" width="220" height="64" rx="4" fill="#059669" stroke="#047857" stroke-width="1.5"/>
+<text x="155" y="709" font-size="11px" fill="#ffffff" text-anchor="middle" dominant-baseline="central">Prova matematica inconfutabile:</text>
+<text x="155" y="725" font-size="11px" fill="#ffffff" text-anchor="middle" dominant-baseline="central">il documento esisteva inalterato</text>
+<text x="155" y="741" font-size="11px" fill="#ffffff" text-anchor="middle" dominant-baseline="central">all'istante t certificato dalla TSA</text>
+<rect x="18" y="771" width="624" height="32" rx="4" fill="#065f46"/>
+<text x="330" y="787" font-size="11px" font-weight="bold" fill="#ecfdf5" text-anchor="middle" dominant-baseline="central">Verifica completata: Integrità e datazione opponibili a terzi</text>
+<rect x="63" y="25" width="185" height="42" rx="6" fill="#f0fdf4" stroke="#86efac" stroke-width="1.5"/>
+<text x="155" y="46" font-size="13.5px" font-weight="bold" fill="#166534" text-anchor="middle" dominant-baseline="central">Auditor / Utente</text>
+<rect x="63" y="819" width="185" height="42" rx="6" fill="#f0fdf4" stroke="#86efac" stroke-width="1.5"/>
+<text x="155" y="840" font-size="13.5px" font-weight="bold" fill="#166534" text-anchor="middle" dominant-baseline="central">Auditor / Utente</text>
+<rect x="413" y="25" width="185" height="42" rx="6" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.5"/>
+<text x="505" y="46" font-size="13.5px" font-weight="bold" fill="#0f172a" text-anchor="middle" dominant-baseline="central">Tool Offline (tss_verify)</text>
+<rect x="413" y="819" width="185" height="42" rx="6" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.5"/>
+<text x="505" y="840" font-size="13.5px" font-weight="bold" fill="#0f172a" text-anchor="middle" dominant-baseline="central">Tool Offline (tss_verify)</text>
+</svg>

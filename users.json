@@ -1,0 +1,22 @@
+{
+  "users": {
+    "alice": {
+      "nc": 1,
+      "nr": 99,
+      "password_hash": "aecf13f9eb1eae4e17c8262c0181e6aefe05c4eb8e9bb34b821eee0c816c25c3",
+      "salt": "55ec0de75abd0232401b9fa897b5bd95"
+    },
+    "bob": {
+      "nc": 0,
+      "nr": 50,
+      "password_hash": "53680addc6aac7154753f7f3437e880e80b7e5cbceb8f8d7a89fdb88d6c32c3b",
+      "salt": "c8751e02dc199af67fd7a156769806ff"
+    },
+    "charlie": {
+      "nc": 10,
+      "nr": 0,
+      "password_hash": "bf61e556b883613f64d0581ad713b6bd5a69cc9ecf0717ba427b766501c41f56",
+      "salt": "52844ea19092869920e378ee350339ed"
+    }
+  }
+}

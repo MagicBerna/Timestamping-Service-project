@@ -1,0 +1,22 @@
+# Build directory and CMake artifacts
+build/
+CMakeCache.txt
+CMakeFiles/
+Makefile
+cmake_install.cmake
+
+# Files explicitly excluded
+old/
+FoC Notes_Tommy.pdf
+CoseDaDire.txt
+Report.tex
+context.md
+Scaletta.md
+
+# Runtime generated tokens
+token_*.json
+
+# OS and editor files
+.DS_Store
+.vscode/
+.idea/

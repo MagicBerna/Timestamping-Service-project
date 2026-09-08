@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 778" width="660" height="778">
+<defs>
+<style>
+text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+.lifeline { stroke: #cbd5e1; stroke-width: 2; }
+.arrow-line { stroke: #1e293b; stroke-width: 1.5; }
+.arrow-text { font-size: 12px; font-weight: 500; fill: #0f172a; text-anchor: middle; }
+.circle-bg { fill: #1e293b; }
+.circle-text { font-size: 10.5px; font-weight: bold; fill: #ffffff; text-anchor: middle; dominant-baseline: central; }
+.payload-box { fill: #1e293b; stroke: #0f172a; stroke-width: 1; rx: 4; }
+.payload-text { font-size: 11px; fill: #f8fafc; text-anchor: middle; dominant-baseline: central; }
+</style>
+</defs>
+<rect width="660" height="778" fill="#ffffff"/>
+<line class="lifeline" x1="155" y1="46" x2="155" y2="732"/>
+<line class="lifeline" x1="505" y1="46" x2="505" y2="732"/>
+<rect x="18" y="85" width="624" height="32" rx="4" fill="#1e293b"/>
+<text x="330" y="101" font-size="11px" font-weight="bold" fill="#ffffff" text-anchor="middle" dominant-baseline="central">Canale sicuro TLS 1.3 attivo - Sessione autenticata (Charlie)</text>
+<rect x="33" y="133" width="245" height="64" rx="4" fill="#2563eb" stroke="#1d4ed8" stroke-width="1.5"/>
+<text x="155" y="149" font-size="11px" fill="#ffffff" text-anchor="middle" dominant-baseline="central">Calcola l'hash SHA-256 del documento</text>
+<text x="155" y="165" font-size="11px" fill="#ffffff" text-anchor="middle" dominant-baseline="central">(256 bit / 32 Byte = 64 caratteri hex)</text>
+<text x="155" y="181" font-size="11px" fill="#ffffff" text-anchor="middle" dominant-baseline="central">(Data Minimization: nessun invio file)</text>
+<line class="arrow-line" x1="155" y1="229" x2="505" y2="229"/>
+<polygon points="505,229 497,225 497,233" fill="#1e293b"/>
+<circle class="circle-bg" cx="177" cy="229" r="9"/>
+<text class="circle-text" x="177" y="229">1</text>
+<text class="arrow-text" x="330" y="224">Richiesta di timestamp con saldo esaurito</text>
+<rect class="payload-box" x="203" y="237" width="255" height="44"/>
+<text class="payload-text" x="330" y="251">{"cmd": "TIMESTAMP",</text>
+<text class="payload-text" x="330" y="266">"hash": "1b4f68b852...240f5c6b", "seq": 1}</text>
+<rect x="388" y="297" width="235" height="48" rx="4" fill="#4f46e5" stroke="#4338ca" stroke-width="1.5"/>
+<text x="505" y="313" font-size="11px" fill="#ffffff" text-anchor="middle" dominant-baseline="central">Verifica seq == expected_seq (1),</text>
+<text x="505" y="329" font-size="11px" fill="#ffffff" text-anchor="middle" dominant-baseline="central">incrementa expected_seq = 2</text>
+<rect x="383" y="359" width="245" height="64" rx="4" fill="#4f46e5" stroke="#4338ca" stroke-width="1.5"/>
+<text x="505" y="375" font-size="11px" fill="#ffffff" text-anchor="middle" dominant-baseline="central">Controllo quota in RAM (g_users):</text>
+<text x="505" y="391" font-size="11px" fill="#ffffff" text-anchor="middle" dominant-baseline="central">Charlie: nc = 10, nr = 0 (esauriti)</text>
+<text x="505" y="407" font-size="11px" fill="#ffffff" text-anchor="middle" dominant-baseline="central">Saldo crediti insufficiente!</text>
+<rect x="385" y="437" width="240" height="48" rx="4" fill="#4f46e5" stroke="#4338ca" stroke-width="1.5"/>
+<text x="505" y="453" font-size="11px" fill="#ffffff" text-anchor="middle" dominant-baseline="central">Nessun calcolo crittografico (privKts),</text>
+<text x="505" y="469" font-size="11px" fill="#ffffff" text-anchor="middle" dominant-baseline="central">nessuna modifica su users.json</text>
+<line class="arrow-line" x1="505" y1="517" x2="155" y2="517"/>
+<polygon points="155,517 163,513 163,521" fill="#1e293b"/>
+<circle class="circle-bg" cx="483" cy="517" r="9"/>
+<text class="circle-text" x="483" y="517">2</text>
+<text class="arrow-text" x="330" y="512">Rifiuto richiesta per quota esaurita</text>
+<rect class="payload-box" x="203" y="525" width="255" height="44"/>
+<text class="payload-text" x="330" y="539">{"status": "ERROR",</text>
+<text class="payload-text" x="330" y="554">"message": "Timestamp balance exhausted"}</text>
+<rect x="33" y="585" width="245" height="64" rx="4" fill="#2563eb" stroke="#1d4ed8" stroke-width="1.5"/>
+<text x="155" y="601" font-size="11px" fill="#ffffff" text-anchor="middle" dominant-baseline="central">Notifica quota esaurita ricevuta.</text>
+<text x="155" y="617" font-size="11px" fill="#ffffff" text-anchor="middle" dominant-baseline="central">Nessun token rilasciato o salvato.</text>
+<text x="155" y="633" font-size="11px" fill="#ffffff" text-anchor="middle" dominant-baseline="central">L'utente deve acquistare nuovi crediti</text>
+<rect x="18" y="663" width="624" height="32" rx="4" fill="#9a3412"/>
+<text x="330" y="679" font-size="11px" font-weight="bold" fill="#fffbeb" text-anchor="middle" dominant-baseline="central">Controllo quote applicato: Emissione bloccata in assenza di crediti residui</text>
+<rect x="75" y="25" width="160" height="42" rx="6" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.5"/>
+<text x="155" y="46" font-size="13.5px" font-weight="bold" fill="#1e40af" text-anchor="middle" dominant-baseline="central">Client di Charlie</text>
+<rect x="75" y="711" width="160" height="42" rx="6" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.5"/>
+<text x="155" y="732" font-size="13.5px" font-weight="bold" fill="#1e40af" text-anchor="middle" dominant-baseline="central">Client di Charlie</text>
+<rect x="425" y="25" width="160" height="42" rx="6" fill="#f5f3ff" stroke="#c4b5fd" stroke-width="1.5"/>
+<text x="505" y="46" font-size="13.5px" font-weight="bold" fill="#5b21b6" text-anchor="middle" dominant-baseline="central">Server</text>
+<rect x="425" y="711" width="160" height="42" rx="6" fill="#f5f3ff" stroke="#c4b5fd" stroke-width="1.5"/>
+<text x="505" y="732" font-size="13.5px" font-weight="bold" fill="#5b21b6" text-anchor="middle" dominant-baseline="central">Server</text>
+</svg>
