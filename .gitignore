@@ -12,6 +12,7 @@ CoseDaDire.txt
 Report.tex
 context.md
 Scaletta.md
+ECDH_AEAD_Spiegazione.md
 
 # Runtime generated tokens
 token_*.json

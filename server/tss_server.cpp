@@ -436,11 +436,26 @@ void handle_client(SSL* ssl, int client_fd, string client_ip, int client_port) {
             continue;
         }
 
-        // 3. Verifica Anti-Replay: Controllo Monotonicita' del Sequence Number
+        // 3. Verifica Session Nonce (Anti-Replay Cross-Session)
+        if (!req.contains("nonce_s") || !req["nonce_s"].is_string() || req["nonce_s"].get<string>() != server_nonce) {
+            cerr << "[!] Violazione sessione/anti-replay da " << client_id << " (utente: " << authenticated_user << "):"
+                 << " nonce_s non valido o non corrispondente alla sessione attiva." << endl;
+            json resp = {
+                {"status", "ERROR"},
+                {"message", "Controllo sessione fallito: nonce_s non valido o non corrispondente alla sessione attiva"},
+                {"nonce_s", server_nonce},
+                {"seq", req.value("seq", 0ULL)}
+            };
+            tss::send_json_message(ssl, resp);
+            break;
+        }
+
+        // 4. Verifica Anti-Replay: Controllo Monotonicita' del Sequence Number
         if (!req.contains("seq") || !req["seq"].is_number_unsigned()) {
             json resp = {
                 {"status", "ERROR"},
-                {"message", "Controllo anti-replay fallito: campo 'seq' (uint) mancante"}
+                {"message", "Controllo anti-replay fallito: campo 'seq' (uint) mancante"},
+                {"nonce_s", server_nonce}
             };
             tss::send_json_message(ssl, resp);
             continue;
@@ -455,14 +470,16 @@ void handle_client(SSL* ssl, int client_fd, string client_ip, int client_port) {
                 {"status", "ERROR"},
                 {"message", "Controllo anti-replay fallito: numero di sequenza errato"},
                 {"expected_seq", expected_seq},
-                {"received_seq", seq}
+                {"received_seq", seq},
+                {"nonce_s", server_nonce},
+                {"seq", seq}
             };
             tss::send_json_message(ssl, resp);
             break; // Termina la sessione per prevenire replay attack
         }
         expected_seq++;
 
-        // 4. Dispatch comandi di sessione
+        // 5. Dispatch comandi di sessione
         if (cmd == "BALANCE") {
             uint64_t nc = 0, nr = 0;
             {
@@ -480,7 +497,9 @@ void handle_client(SSL* ssl, int client_fd, string client_ip, int client_port) {
             json resp = {
                 {"status", "OK"},
                 {"nc", nc},
-                {"nr", nr}
+                {"nr", nr},
+                {"nonce_s", server_nonce},
+                {"seq", seq}
             };
             if (!tss::send_json_message(ssl, resp)) {
                 cerr << "[-] Errore invio risposta BALANCE a " << client_id << endl;
@@ -492,7 +511,9 @@ void handle_client(SSL* ssl, int client_fd, string client_ip, int client_port) {
             if (!req.contains("hash") || !req["hash"].is_string()) {
                 json resp = {
                     {"status", "ERROR"},
-                    {"message", "Parametro 'hash' (stringa SHA-256 esadecimale) mancante o non valido"}
+                    {"message", "Parametro 'hash' (stringa SHA-256 esadecimale) mancante o non valido"},
+                    {"nonce_s", server_nonce},
+                    {"seq", seq}
                 };
                 tss::send_json_message(ssl, resp);
                 continue;
@@ -504,7 +525,9 @@ void handle_client(SSL* ssl, int client_fd, string client_ip, int client_port) {
             if (doc_hash.length() != 64) {
                 json resp = {
                     {"status", "ERROR"},
-                    {"message", "Formato hash non valido (deve essere una stringa esadecimale SHA-256 di 64 caratteri)"}
+                    {"message", "Formato hash non valido (deve essere una stringa esadecimale SHA-256 di 64 caratteri)"},
+                    {"nonce_s", server_nonce},
+                    {"seq", seq}
                 };
                 tss::send_json_message(ssl, resp);
                 continue;
@@ -520,7 +543,9 @@ void handle_client(SSL* ssl, int client_fd, string client_ip, int client_port) {
             if (!valid_hex) {
                 json resp = {
                     {"status", "ERROR"},
-                    {"message", "L'hash contiene caratteri esadecimali non validi"}
+                    {"message", "L'hash contiene caratteri esadecimali non validi"},
+                    {"nonce_s", server_nonce},
+                    {"seq", seq}
                 };
                 tss::send_json_message(ssl, resp);
                 continue;
@@ -553,7 +578,9 @@ void handle_client(SSL* ssl, int client_fd, string client_ip, int client_port) {
                      << "': saldo esaurito (nr = 0)" << endl;
                 json resp = {
                     {"status", "ERROR"},
-                    {"message", "Timestamp balance exhausted"}
+                    {"message", "Timestamp balance exhausted"},
+                    {"nonce_s", server_nonce},
+                    {"seq", seq}
                 };
                 tss::send_json_message(ssl, resp);
                 continue;
@@ -570,7 +597,9 @@ void handle_client(SSL* ssl, int client_fd, string client_ip, int client_port) {
                 cerr << "[ERRORE] Costruzione payload fallita: " << e.what() << endl;
                 json resp = {
                     {"status", "ERROR"},
-                    {"message", "Errore interno nella costruzione del payload"}
+                    {"message", "Errore interno nella costruzione del payload"},
+                    {"nonce_s", server_nonce},
+                    {"seq", seq}
                 };
                 tss::send_json_message(ssl, resp);
                 continue;
@@ -584,7 +613,9 @@ void handle_client(SSL* ssl, int client_fd, string client_ip, int client_port) {
                 cerr << "[ERRORE] Firma digitale fallita: " << e.what() << endl;
                 json resp = {
                     {"status", "ERROR"},
-                    {"message", "Errore crittografico interno durante la firma del timestamp"}
+                    {"message", "Errore crittografico interno durante la firma del timestamp"},
+                    {"nonce_s", server_nonce},
+                    {"seq", seq}
                 };
                 tss::send_json_message(ssl, resp);
                 continue;
@@ -595,12 +626,16 @@ void handle_client(SSL* ssl, int client_fd, string client_ip, int client_port) {
                  << " | Saldo rimanente: " << updated_nr 
                  << " (nc=" << updated_nc << ")" << endl;
 
-            // Invio del token di timestamp firmato
+            // Invio del token di timestamp firmato, con binding a sessione (nonce_s) e seq
             json resp = {
                 {"status", "OK"},
                 {"hash", doc_hash},
                 {"time", ts_epoch},
-                {"signature", sig_hex}
+                {"signature", sig_hex},
+                {"nc", updated_nc},
+                {"nr", updated_nr},
+                {"nonce_s", server_nonce},
+                {"seq", seq}
             };
             if (!tss::send_json_message(ssl, resp)) {
                 cerr << "[-] Errore invio risposta TIMESTAMP a " << client_id << endl;
@@ -611,7 +646,9 @@ void handle_client(SSL* ssl, int client_fd, string client_ip, int client_port) {
         else if (cmd == "QUIT" || cmd == "LOGOUT") {
             json resp = {
                 {"status", "OK"},
-                {"message", "Disconnessione completata con successo"}
+                {"message", "Disconnessione completata con successo"},
+                {"nonce_s", server_nonce},
+                {"seq", seq}
             };
             tss::send_json_message(ssl, resp);
             break;
@@ -619,7 +656,9 @@ void handle_client(SSL* ssl, int client_fd, string client_ip, int client_port) {
         else {
             json resp = {
                 {"status", "ERROR"},
-                {"message", "Comando sconosciuto o non supportato: " + cmd}
+                {"message", "Comando sconosciuto o non supportato: " + cmd},
+                {"nonce_s", server_nonce},
+                {"seq", seq}
             };
             tss::send_json_message(ssl, resp);
         }

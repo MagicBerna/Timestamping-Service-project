@@ -481,10 +481,12 @@ int main(int argc, char* argv[]) {
                 }
             }
 
+            uint64_t cur_seq = seq++;
             json req = {
                 {"cmd", "TIMESTAMP"},
                 {"hash", hash_hex},
-                {"seq", seq++}
+                {"nonce_s", nonce_s},
+                {"seq", cur_seq}
             };
 
             if (!tss::send_json_message(ssl, req)) {
@@ -495,6 +497,14 @@ int main(int argc, char* argv[]) {
             json resp;
             if (!tss::recv_json_message(ssl, resp)) {
                 cerr << "[ERRORE] Ricezione risposta TIMESTAMP fallita." << endl;
+                break;
+            }
+
+            // Validazione anti-replay e session binding della risposta del server
+            if (resp.value("nonce_s", "") != nonce_s || resp.value("seq", 0ULL) != cur_seq) {
+                cerr << "[ERRORE] Validazione risposta fallita: session nonce_s o seq non corrispondono!" << endl;
+                cerr << "         Atteso: nonce_s=" << nonce_s.substr(0, 8) << "..., seq=" << cur_seq << endl;
+                cerr << "         Ricevuto: nonce_s=" << resp.value("nonce_s", "").substr(0, 8) << "..., seq=" << resp.value("seq", 0ULL) << endl;
                 break;
             }
 
@@ -521,9 +531,11 @@ int main(int argc, char* argv[]) {
         }
         // --- Comando: balance ---
         else if (cmd_word == "balance") {
+            uint64_t cur_seq = seq++;
             json req = {
                 {"cmd", "BALANCE"},
-                {"seq", seq++}
+                {"nonce_s", nonce_s},
+                {"seq", cur_seq}
             };
 
             if (!tss::send_json_message(ssl, req)) {
@@ -534,6 +546,14 @@ int main(int argc, char* argv[]) {
             json resp;
             if (!tss::recv_json_message(ssl, resp)) {
                 cerr << "[ERRORE] Ricezione risposta BALANCE fallita." << endl;
+                break;
+            }
+
+            // Validazione anti-replay e session binding della risposta del server
+            if (resp.value("nonce_s", "") != nonce_s || resp.value("seq", 0ULL) != cur_seq) {
+                cerr << "[ERRORE] Validazione risposta fallita: session nonce_s o seq non corrispondono!" << endl;
+                cerr << "         Atteso: nonce_s=" << nonce_s.substr(0, 8) << "..., seq=" << cur_seq << endl;
+                cerr << "         Ricevuto: nonce_s=" << resp.value("nonce_s", "").substr(0, 8) << "..., seq=" << resp.value("seq", 0ULL) << endl;
                 break;
             }
 
@@ -574,13 +594,19 @@ int main(int argc, char* argv[]) {
         }
         // --- Comando: quit / exit ---
         else if (cmd_word == "quit" || cmd_word == "exit") {
+            uint64_t cur_seq = seq++;
             json req = {
                 {"cmd", "QUIT"},
-                {"seq", seq++}
+                {"nonce_s", nonce_s},
+                {"seq", cur_seq}
             };
             tss::send_json_message(ssl, req);
             json resp;
-            tss::recv_json_message(ssl, resp);
+            if (tss::recv_json_message(ssl, resp)) {
+                if (resp.value("nonce_s", "") != nonce_s || resp.value("seq", 0ULL) != cur_seq) {
+                    cerr << "[ATTENZIONE] Risposta QUIT con nonce_s o seq non corrispondenti." << endl;
+                }
+            }
             break;
         }
         // --- Comando Sconosciuto ---

@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 824" width="660" height="824">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 840" width="660" height="840">
 <defs>
 <style>
 text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
@@ -11,9 +11,9 @@ text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helve
 .payload-text { font-size: 11px; fill: #f8fafc; text-anchor: middle; dominant-baseline: central; }
 </style>
 </defs>
-<rect width="660" height="824" fill="#ffffff"/>
-<line class="lifeline" x1="155" y1="46" x2="155" y2="778"/>
-<line class="lifeline" x1="505" y1="46" x2="505" y2="778"/>
+<rect width="660" height="840" fill="#ffffff"/>
+<line class="lifeline" x1="155" y1="46" x2="155" y2="794"/>
+<line class="lifeline" x1="505" y1="46" x2="505" y2="794"/>
 <rect x="18" y="85" width="624" height="32" rx="4" fill="#1e293b"/>
 <text x="330" y="101" font-size="11px" font-weight="bold" fill="#ffffff" text-anchor="middle" dominant-baseline="central">Canale sicuro TLS 1.3 attivo - Sessione utente autenticata</text>
 <rect x="30" y="133" width="250" height="64" rx="4" fill="#2563eb" stroke="#1d4ed8" stroke-width="1.5"/>
@@ -28,39 +28,40 @@ text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helve
 <rect class="payload-box" x="195" y="237" width="270" height="59"/>
 <text class="payload-text" x="330" y="251">{"cmd": "TIMESTAMP",</text>
 <text class="payload-text" x="330" y="266">"hash": "c4ca4238a0b92382... (32 hex)",</text>
-<text class="payload-text" x="330" y="281">"seq": 1}</text>
-<rect x="383" y="312" width="245" height="48" rx="4" fill="#4f46e5" stroke="#4338ca" stroke-width="1.5"/>
-<text x="505" y="328" font-size="11px" fill="#ffffff" text-anchor="middle" dominant-baseline="central">Verifica anti-replay: seq == expected_seq,</text>
-<text x="505" y="344" font-size="11px" fill="#ffffff" text-anchor="middle" dominant-baseline="central">incrementa expected_seq = 2</text>
-<rect x="380" y="374" width="250" height="64" rx="4" fill="#4f46e5" stroke="#4338ca" stroke-width="1.5"/>
-<text x="505" y="390" font-size="11px" fill="#ffffff" text-anchor="middle" dominant-baseline="central">Validazione sintattica dell'hash:</text>
-<text x="505" y="406" font-size="11px" fill="#ffffff" text-anchor="middle" dominant-baseline="central">doc_hash.length() == 32 (non 64 hex)</text>
-<text x="505" y="422" font-size="11px" fill="#ffffff" text-anchor="middle" dominant-baseline="central">Rifiuto: non conforme a SHA-256</text>
-<rect x="380" y="452" width="250" height="64" rx="4" fill="#4f46e5" stroke="#4338ca" stroke-width="1.5"/>
-<text x="505" y="468" font-size="11px" fill="#ffffff" text-anchor="middle" dominant-baseline="central">Protezione servizio e contabilità:</text>
-<text x="505" y="484" font-size="11px" fill="#ffffff" text-anchor="middle" dominant-baseline="central">Nessuna firma digitale con privKts,</text>
-<text x="505" y="500" font-size="11px" fill="#ffffff" text-anchor="middle" dominant-baseline="central">crediti utente intatti (nr invariato)</text>
-<line class="arrow-line" x1="505" y1="548" x2="155" y2="548"/>
-<polygon points="155,548 163,544 163,552" fill="#1e293b"/>
-<circle class="circle-bg" cx="483" cy="548" r="9"/>
-<text class="circle-text" x="483" y="548">2</text>
-<text class="arrow-text" x="330" y="543">Rifiuto immediato (formato errato)</text>
-<rect class="payload-box" x="198" y="556" width="265" height="59"/>
-<text class="payload-text" x="330" y="570">{"status": "ERROR",</text>
-<text class="payload-text" x="330" y="585">"message": "Formato hash non valido",</text>
-<text class="payload-text" x="330" y="600">"dettaglio": "richiesto SHA-256 a 64 hex"}</text>
-<rect x="38" y="631" width="235" height="64" rx="4" fill="#2563eb" stroke="#1d4ed8" stroke-width="1.5"/>
-<text x="155" y="647" font-size="11px" fill="#ffffff" text-anchor="middle" dominant-baseline="central">Richiesta respinta dal server.</text>
-<text x="155" y="663" font-size="11px" fill="#ffffff" text-anchor="middle" dominant-baseline="central">Il servizio impone SHA-256 per</text>
-<text x="155" y="679" font-size="11px" fill="#ffffff" text-anchor="middle" dominant-baseline="central">garantire il pieno valore legale</text>
-<rect x="18" y="709" width="624" height="32" rx="4" fill="#9a3412"/>
-<text x="330" y="725" font-size="11px" font-weight="bold" fill="#fffbeb" text-anchor="middle" dominant-baseline="central">Sicurezza garantita: Rifiutati algoritmi deboli soggetti ad attacchi di collisione</text>
+<text class="payload-text" x="330" y="281">"nonce_s": "Ns", "seq": 1}</text>
+<rect x="383" y="312" width="245" height="64" rx="4" fill="#4f46e5" stroke="#4338ca" stroke-width="1.5"/>
+<text x="505" y="328" font-size="11px" fill="#ffffff" text-anchor="middle" dominant-baseline="central">Verifica anti-replay/sessione:</text>
+<text x="505" y="344" font-size="11px" fill="#ffffff" text-anchor="middle" dominant-baseline="central">nonce_s == Ns e seq == expected_seq,</text>
+<text x="505" y="360" font-size="11px" fill="#ffffff" text-anchor="middle" dominant-baseline="central">incrementa expected_seq = 2</text>
+<rect x="380" y="390" width="250" height="64" rx="4" fill="#4f46e5" stroke="#4338ca" stroke-width="1.5"/>
+<text x="505" y="406" font-size="11px" fill="#ffffff" text-anchor="middle" dominant-baseline="central">Validazione sintattica dell'hash:</text>
+<text x="505" y="422" font-size="11px" fill="#ffffff" text-anchor="middle" dominant-baseline="central">doc_hash.length() == 32 (non 64 hex)</text>
+<text x="505" y="438" font-size="11px" fill="#ffffff" text-anchor="middle" dominant-baseline="central">Rifiuto: non conforme a SHA-256</text>
+<rect x="380" y="468" width="250" height="64" rx="4" fill="#4f46e5" stroke="#4338ca" stroke-width="1.5"/>
+<text x="505" y="484" font-size="11px" fill="#ffffff" text-anchor="middle" dominant-baseline="central">Protezione servizio e contabilità:</text>
+<text x="505" y="500" font-size="11px" fill="#ffffff" text-anchor="middle" dominant-baseline="central">Nessuna firma digitale con privKts,</text>
+<text x="505" y="516" font-size="11px" fill="#ffffff" text-anchor="middle" dominant-baseline="central">crediti utente intatti (nr invariato)</text>
+<line class="arrow-line" x1="505" y1="564" x2="155" y2="564"/>
+<polygon points="155,564 163,560 163,568" fill="#1e293b"/>
+<circle class="circle-bg" cx="483" cy="564" r="9"/>
+<text class="circle-text" x="483" y="564">2</text>
+<text class="arrow-text" x="330" y="559">Rifiuto immediato (formato errato)</text>
+<rect class="payload-box" x="198" y="572" width="265" height="59"/>
+<text class="payload-text" x="330" y="586">{"status": "ERROR",</text>
+<text class="payload-text" x="330" y="601">"message": "Formato hash non valido",</text>
+<text class="payload-text" x="330" y="616">"nonce_s": "Ns", "seq": 1}</text>
+<rect x="38" y="647" width="235" height="64" rx="4" fill="#2563eb" stroke="#1d4ed8" stroke-width="1.5"/>
+<text x="155" y="663" font-size="11px" fill="#ffffff" text-anchor="middle" dominant-baseline="central">Richiesta respinta dal server.</text>
+<text x="155" y="679" font-size="11px" fill="#ffffff" text-anchor="middle" dominant-baseline="central">Il servizio impone SHA-256 per</text>
+<text x="155" y="695" font-size="11px" fill="#ffffff" text-anchor="middle" dominant-baseline="central">garantire il pieno valore legale</text>
+<rect x="18" y="725" width="624" height="32" rx="4" fill="#9a3412"/>
+<text x="330" y="741" font-size="11px" font-weight="bold" fill="#fffbeb" text-anchor="middle" dominant-baseline="central">Sicurezza garantita: Rifiutati algoritmi deboli soggetti ad attacchi di collisione</text>
 <rect x="75" y="25" width="160" height="42" rx="6" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.5"/>
 <text x="155" y="46" font-size="13.5px" font-weight="bold" fill="#1e40af" text-anchor="middle" dominant-baseline="central">Client</text>
-<rect x="75" y="757" width="160" height="42" rx="6" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.5"/>
-<text x="155" y="778" font-size="13.5px" font-weight="bold" fill="#1e40af" text-anchor="middle" dominant-baseline="central">Client</text>
+<rect x="75" y="773" width="160" height="42" rx="6" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.5"/>
+<text x="155" y="794" font-size="13.5px" font-weight="bold" fill="#1e40af" text-anchor="middle" dominant-baseline="central">Client</text>
 <rect x="425" y="25" width="160" height="42" rx="6" fill="#f5f3ff" stroke="#c4b5fd" stroke-width="1.5"/>
 <text x="505" y="46" font-size="13.5px" font-weight="bold" fill="#5b21b6" text-anchor="middle" dominant-baseline="central">Server</text>
-<rect x="425" y="757" width="160" height="42" rx="6" fill="#f5f3ff" stroke="#c4b5fd" stroke-width="1.5"/>
-<text x="505" y="778" font-size="13.5px" font-weight="bold" fill="#5b21b6" text-anchor="middle" dominant-baseline="central">Server</text>
+<rect x="425" y="773" width="160" height="42" rx="6" fill="#f5f3ff" stroke="#c4b5fd" stroke-width="1.5"/>
+<text x="505" y="794" font-size="13.5px" font-weight="bold" fill="#5b21b6" text-anchor="middle" dominant-baseline="central">Server</text>
 </svg>

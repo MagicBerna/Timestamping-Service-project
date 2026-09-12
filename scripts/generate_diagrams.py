@@ -575,13 +575,15 @@ def make_fig3_timestamp_happy():
 
     d.add_message(0, 1, "Richiesta di timestamp sull'hash calcolato", payload_lines=[
         '{"cmd": "TIMESTAMP",',
-        '"hash": "h_sha256", "seq": 1}'
+        '"hash": "h_sha256",',
+        '"nonce_s": "Ns", "seq": 1}'
     ], step_num=1, payload_width=230)
 
     d.add_note(1, [
-        "Verifica anti-replay: seq == expected_seq,",
+        "Verifica anti-replay/sessione:",
+        "nonce_s == Ns e seq == expected_seq,",
         "incrementa expected_seq = 2"
-    ], width=240)
+    ], width=245)
 
     d.add_note(1, [
         "Verifica i crediti residui",
@@ -601,7 +603,9 @@ def make_fig3_timestamp_happy():
 
     d.add_message(1, 0, "Token emesso (hash, time, firma)", payload_lines=[
         '{"status": "OK", "hash": "h",',
-        '"time": t, "signature": "σ"}'
+        '"time": t, "signature": "σ",',
+        '"nc": 1, "nr": 99,',
+        '"nonce_s": "Ns", "seq": 1}'
     ], step_num=2, payload_width=230)
 
     d.add_note(0, [
@@ -625,18 +629,21 @@ def make_fig4_edge_cases():
     d.add_span("Caso 1: Quota di Timestamp Esaurita (Utente Charlie, nr = 0)", style="warning", height=32)
 
     d.add_message(0, 1, "Richiesta timestamp con crediti esauriti", payload_lines=[
-        '{"cmd": "TIMESTAMP", "hash": "h", "seq": 1}'
-    ], step_num=1, payload_width=255)
+        '{"cmd": "TIMESTAMP", "hash": "h",',
+        '"nonce_s": "Ns", "seq": 1}'
+    ], step_num=1, payload_width=260)
 
     d.add_note(1, [
+        "Verifica nonce_s == Ns e seq == 1",
         "Rileva crediti residui nr == 0 in users.json",
         "Rifiuta la richiesta senza scalare crediti"
     ], width=250)
 
     d.add_message(1, 0, "Notifica errore quota esaurita", payload_lines=[
         '{"status": "ERROR",',
-        '"message": "Timestamp balance exhausted"}'
-    ], step_num=2, payload_width=250)
+        '"message": "Timestamp balance exhausted",',
+        '"nonce_s": "Ns", "seq": 1}'
+    ], step_num=2, payload_width=270)
 
     d.add_note(0, [
         "Operazione respinta:",
@@ -646,8 +653,9 @@ def make_fig4_edge_cases():
     d.add_span("Caso 2: Tentativo di Replay Attack (Messaggio duplicato o seq già usato)", style="error", height=32)
 
     d.add_message(0, 1, "Replay frame con seq già consumato", payload_lines=[
-        '{"cmd": "TIMESTAMP", "hash": "h", "seq": 1}'
-    ], step_num=3, payload_width=255)
+        '{"cmd": "TIMESTAMP", "hash": "h",',
+        '"nonce_s": "Ns", "seq": 1}'
+    ], step_num=3, payload_width=260)
 
     d.add_note(1, [
         "Rileva seq mismatch (1 != expected 2)",
@@ -741,11 +749,12 @@ def make_fig_weak_hash_md5():
     d.add_message(0, 1, "Richiesta con hash debole (MD5)", payload_lines=[
         '{"cmd": "TIMESTAMP",',
         '"hash": "c4ca4238a0b92382... (32 hex)",',
-        '"seq": 1}'
+        '"nonce_s": "Ns", "seq": 1}'
     ], step_num=1, payload_width=270)
 
     d.add_note(1, [
-        "Verifica anti-replay: seq == expected_seq,",
+        "Verifica anti-replay/sessione:",
+        "nonce_s == Ns e seq == expected_seq,",
         "incrementa expected_seq = 2"
     ], width=245)
 
@@ -764,7 +773,7 @@ def make_fig_weak_hash_md5():
     d.add_message(1, 0, "Rifiuto immediato (formato errato)", payload_lines=[
         '{"status": "ERROR",',
         '"message": "Formato hash non valido",',
-        '"dettaglio": "richiesto SHA-256 a 64 hex"}'
+        '"nonce_s": "Ns", "seq": 1}'
     ], step_num=2, payload_width=265)
 
     d.add_note(0, [
@@ -796,11 +805,12 @@ def make_fig_quota_exhausted():
 
     d.add_message(0, 1, "Richiesta di timestamp con saldo esaurito", payload_lines=[
         '{"cmd": "TIMESTAMP",',
-        '"hash": "1b4f68b852...240f5c6b", "seq": 1}'
+        '"hash": "1b4f68b852...240f5c6b",',
+        '"nonce_s": "Ns", "seq": 1}'
     ], step_num=1, payload_width=255)
 
     d.add_note(1, [
-        "Verifica seq == expected_seq (1),",
+        "Verifica nonce_s == Ns e seq == 1,",
         "incrementa expected_seq = 2"
     ], width=235)
 
@@ -817,7 +827,8 @@ def make_fig_quota_exhausted():
 
     d.add_message(1, 0, "Rifiuto richiesta per quota esaurita", payload_lines=[
         '{"status": "ERROR",',
-        '"message": "Timestamp balance exhausted"}'
+        '"message": "Timestamp balance exhausted",',
+        '"nonce_s": "Ns", "seq": 1}'
     ], step_num=2, payload_width=255)
 
     d.add_note(0, [

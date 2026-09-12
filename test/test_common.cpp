@@ -85,14 +85,31 @@ void test_json_structures() {
     assert(login_req["cmd"] == "LOGIN");
     assert(login_req["username"] == "alice");
 
+    std::string session_nonce = tss::generate_nonce_hex(16);
+    nlohmann::json ts_req = {
+        {"cmd", "TIMESTAMP"},
+        {"hash", "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"},
+        {"nonce_s", session_nonce},
+        {"seq", 1}
+    };
+    assert(ts_req["cmd"] == "TIMESTAMP");
+    assert(ts_req["nonce_s"] == session_nonce);
+    assert(ts_req["seq"] == 1);
+
     nlohmann::json ts_resp = {
         {"status", "OK"},
         {"hash", "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"},
         {"time", 1772000000ULL},
-        {"signature", "3045022100..."}
+        {"signature", "3045022100..."},
+        {"nc", 1},
+        {"nr", 99},
+        {"nonce_s", session_nonce},
+        {"seq", 1}
     };
     assert(ts_resp["status"] == "OK");
-    std::cout << "  -> PASSED (JSON schema and serialization verified)" << std::endl;
+    assert(ts_resp["nonce_s"] == session_nonce);
+    assert(ts_resp["seq"] == 1);
+    std::cout << "  -> PASSED (JSON schema with session nonce and seq verified)" << std::endl;
 }
 
 int main() {
