@@ -390,14 +390,10 @@ int main(int argc, char* argv[]) {
         }
     }
 
-    // Generazione nonce client per freschezza della sessione
-    string nonce_c = tss::generate_nonce_hex(16);
-
     json login_req = {
         {"cmd", "LOGIN"},
         {"username", username},
-        {"password", password},
-        {"nonce_c", nonce_c}
+        {"password", password}
     };
 
     if (!tss::send_json_message(ssl, login_req)) {
@@ -431,7 +427,6 @@ int main(int argc, char* argv[]) {
 
     string nonce_s = login_resp.value("nonce_s", "");
     cout << "[OK] Autenticazione completata con successo per l'utente '" << username << "'!" << endl;
-    cout << "     Nonce Client : " << nonce_c << endl;
     cout << "     Nonce Server : " << nonce_s << endl;
 
     print_help();

@@ -90,8 +90,8 @@ ARROW_TEXT = "#0f172a"
 CIRCLE_BG = "#1e293b"
 CIRCLE_TEXT = "#ffffff"
 
-FONT_REGULAR_PATH = "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
-FONT_BOLD_PATH = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
+FONT_REGULAR_PATH = "/System/Library/Fonts/Supplemental/Arial.ttf"
+FONT_BOLD_PATH = "/System/Library/Fonts/Supplemental/Arial Bold.ttf"
 
 
 class FlowDiagram:
@@ -520,15 +520,10 @@ def make_fig2_login():
 
     d.add_span("Canale sicuro già stabilito (handshake TLS 1.3 completato)", style="info", height=32)
 
-    d.add_note(0, [
-        "Genera nonce crittografico",
-        "del client Nc (16B CSPRNG)"
-    ], width=205)
-
     d.add_message(0, 1, 'Login (email/username + password)', payload_lines=[
         '{"cmd": "LOGIN", "username": "alice",',
-        '"password": "...", "nonce_c": "Nc"}'
-    ], step_num=1, payload_width=245)
+        '"password": "..."}'
+    ], step_num=1, payload_width=220)
 
     d.add_note(1, [
         "Verifica le credenziali in memoria",

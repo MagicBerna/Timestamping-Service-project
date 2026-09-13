@@ -290,7 +290,7 @@ int create_server_socket(int port) {
     server_addr.sin_addr.s_addr = htonl(INADDR_ANY);
     server_addr.sin_port = htons(static_cast<uint16_t>(port));
 
-    if (bind(server_fd, reinterpret_cast<sockaddr*>(&server_addr), sizeof(server_addr)) < 0) {
+    if (::bind(server_fd, reinterpret_cast<sockaddr*>(&server_addr), sizeof(server_addr)) < 0) {
         perror("[ERRORE] Bind fallito");
         close(server_fd);
         return -1;
@@ -328,7 +328,6 @@ void handle_client(SSL* ssl, int client_fd, string client_ip, int client_port) {
     // Stato di Sessione del Client
     bool is_authenticated = false;
     string authenticated_user;
-    string client_nonce;
     string server_nonce;
     uint64_t expected_seq = 1;
 
@@ -368,11 +367,11 @@ void handle_client(SSL* ssl, int client_fd, string client_ip, int client_port) {
                 continue;
             }
 
-            if (!req.contains("username") || !req.contains("password") || !req.contains("nonce_c") ||
-                !req["username"].is_string() || !req["password"].is_string() || !req["nonce_c"].is_string()) {
+            if (!req.contains("username") || !req.contains("password") ||
+                !req["username"].is_string() || !req["password"].is_string()) {
                 json resp = {
                     {"status", "ERROR"},
-                    {"message", "Parametri LOGIN mancanti o non validi (richiesti: username, password, nonce_c)"}
+                    {"message", "Parametri LOGIN mancanti o non validi (richiesti: username, password)"}
                 };
                 tss::send_json_message(ssl, resp);
                 continue;
@@ -380,12 +379,11 @@ void handle_client(SSL* ssl, int client_fd, string client_ip, int client_port) {
 
             string username = req["username"].get<string>();
             string password = req["password"].get<string>();
-            string nonce_c = req["nonce_c"].get<string>();
 
-            if (username.empty() || password.empty() || nonce_c.empty()) {
+            if (username.empty() || password.empty()) {
                 json resp = {
                     {"status", "ERROR"},
-                    {"message", "Credenziali o nonce_c non possono essere vuoti"}
+                    {"message", "Credenziali non possono essere vuote"}
                 };
                 tss::send_json_message(ssl, resp);
                 continue;
@@ -408,12 +406,11 @@ void handle_client(SSL* ssl, int client_fd, string client_ip, int client_port) {
             string nonce_s = tss::generate_nonce_hex(16);
             is_authenticated = true;
             authenticated_user = username;
-            client_nonce = nonce_c;
             server_nonce = nonce_s;
             expected_seq = 1;
 
             cout << "[+] Autenticazione RIUSCITA per '" << username << "' da " << client_id 
-                 << " (Nonce_C: " << client_nonce.substr(0, 8) << "... | Nonce_S: " << server_nonce.substr(0, 8) << "...)" << endl;
+                 << " (Nonce_S: " << server_nonce.substr(0, 8) << "...)" << endl;
 
             json resp = {
                 {"status", "OK"},

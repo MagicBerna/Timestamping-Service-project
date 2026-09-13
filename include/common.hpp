@@ -10,7 +10,13 @@
 #include <cstring>
 #include <cstdint>
 #include <stdexcept>
+#ifdef __APPLE__
+#include <machine/endian.h>
+#include <libkern/OSByteOrder.h>
+#define htobe64(x) OSSwapHostToBigInt64(x)
+#else
 #include <endian.h>
+#endif
 #include <arpa/inet.h>
 
 #include <openssl/ssl.h>

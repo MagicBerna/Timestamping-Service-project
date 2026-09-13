@@ -1,22 +1,22 @@
 {
   "users": {
-    "alice": {
-      "nc": 1,
-      "nr": 99,
-      "password_hash": "aecf13f9eb1eae4e17c8262c0181e6aefe05c4eb8e9bb34b821eee0c816c25c3",
-      "salt": "55ec0de75abd0232401b9fa897b5bd95"
-    },
-    "bob": {
+        "alice": {
+      "salt": "085428ce380a3b6d11065a9431c18077",
+      "password_hash": "9c63fa34da5a4fda7306a4de018f7a6d47f95770f4be51683998c1da247c8e62",
       "nc": 0,
-      "nr": 50,
-      "password_hash": "53680addc6aac7154753f7f3437e880e80b7e5cbceb8f8d7a89fdb88d6c32c3b",
-      "salt": "c8751e02dc199af67fd7a156769806ff"
+      "nr": 100
     },
-    "charlie": {
+        "bob": {
+      "salt": "2b7df2c911a097f3c88681dc3d2f38bb",
+      "password_hash": "9e89b45078df8bb1dcd03bfa96d1519e92352bcf8124c7563d1c4245d93411eb",
+      "nc": 0,
+      "nr": 50
+    },
+        "charlie": {
+      "salt": "68ff55047c392fd9090b6c4507fb0bc2",
+      "password_hash": "88a379ea408d3eea49c39a70a611f6796b8624da9cd9f76f4c042ccf2b60e02c",
       "nc": 10,
-      "nr": 0,
-      "password_hash": "bf61e556b883613f64d0581ad713b6bd5a69cc9ecf0717ba427b766501c41f56",
-      "salt": "52844ea19092869920e378ee350339ed"
+      "nr": 0
     }
   }
 }
