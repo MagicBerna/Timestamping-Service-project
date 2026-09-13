@@ -629,8 +629,6 @@ void handle_client(SSL* ssl, int client_fd, string client_ip, int client_port) {
                 {"hash", doc_hash},
                 {"time", ts_epoch},
                 {"signature", sig_hex},
-                {"nc", updated_nc},
-                {"nr", updated_nr},
                 {"nonce_s", server_nonce},
                 {"seq", seq}
             };

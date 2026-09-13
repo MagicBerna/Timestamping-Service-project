@@ -599,7 +599,6 @@ def make_fig3_timestamp_happy():
     d.add_message(1, 0, "Token emesso (hash, time, firma)", payload_lines=[
         '{"status": "OK", "hash": "h",',
         '"time": t, "signature": "σ",',
-        '"nc": 1, "nr": 99,',
         '"nonce_s": "Ns", "seq": 1}'
     ], step_num=2, payload_width=230)
 
