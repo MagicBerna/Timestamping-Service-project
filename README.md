@@ -32,7 +32,7 @@ A secure, standards-compliant Time Stamping Authority (TSA) client-server implem
 
 ### 5. Verify a Token Offline
 ```bash
-./build/tss_verify --token token_<hash>.json --file mio_documento.txt
+./build/tss_verify --token token_<hash>.json --file documento.txt
 ```
 
 ## Protocol Diagrams

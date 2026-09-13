@@ -25,9 +25,7 @@ FetchContent_MakeAvailable(nlohmann_json)
 # Include directory
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 
-# Common unit test executable for verifying Phase 2 utilities
-add_executable(test_common test/test_common.cpp)
-target_link_libraries(test_common PRIVATE OpenSSL::SSL OpenSSL::Crypto nlohmann_json::nlohmann_json)
+
 
 # Placeholder targets for upcoming phases (will be built as files are created)
 if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/verify/tss_verify.cpp")

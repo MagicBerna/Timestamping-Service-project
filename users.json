@@ -1,22 +1,22 @@
 {
   "users": {
-    "alice": {
-      "nc": 3,
-      "nr": 97,
-      "password_hash": "3b2d65fe373853c312bbe72015b371836587569ad381c5d1787884e72422e6cc",
-      "salt": "7d40f892dff398c700d946c80693c64b"
+        "alice": {
+      "salt": "57e515af47d2a6223ebcea4d54040935",
+      "password_hash": "2c644fa9bee4f4faa0292f946349bedb224cb88c14331a36ba511111ce86d9e7",
+      "nc": 0,
+      "nr": 100
     },
-    "bob": {
-      "nc": 3,
-      "nr": 47,
-      "password_hash": "6246293ed9a82ff2e1027a5bacd17fb87b12cfe14e98577b099e60501879a6c1",
-      "salt": "4b3a45397542465cdabacdb65d508bf9"
+        "bob": {
+      "salt": "a448483378ba0d5455f9423c963ae7f4",
+      "password_hash": "443e151681485647fdf644716c8dffe920491b47e9998b7870f5fab8dbee6827",
+      "nc": 0,
+      "nr": 50
     },
-    "charlie": {
+        "charlie": {
+      "salt": "129c07c4d05c768940425006ea7126a1",
+      "password_hash": "07f0f97d616463712e3ecee0cdfd823df9aa9b76743ec9c3ec15b9fcd8e0cf69",
       "nc": 10,
-      "nr": 0,
-      "password_hash": "adff72b484cec4db4fbd33e0ff4d0f5e75132607faba775b19b0c26407eaf911",
-      "salt": "4d80c508197b12e2d16c500980e4313d"
+      "nr": 0
     }
   }
 }

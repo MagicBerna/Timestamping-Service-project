@@ -40,9 +40,6 @@ fi
 if [ -f "$BUILD_DIR/tss_verify" ]; then
     echo "  [OK] $BUILD_DIR/tss_verify   (Verificatore Offline dei Token)"
 fi
-if [ -f "$BUILD_DIR/test_common" ]; then
-    echo "  [OK] $BUILD_DIR/test_common  (Unit Test Modulo Comune)"
-fi
 
 echo ""
 echo "Guida rapida per l'esecuzione:"
